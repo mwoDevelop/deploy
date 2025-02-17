@@ -116,5 +116,6 @@ class MACDBBV1Controller(DirectionalTradingControllerBase):
         df.loc[short_condition, "signal"] = -1
 
         # Update processed data
-        self.processed_data["signal"] = df["signal"].iloc[-1]
+        from pages.config.utils import combine_signals
+        self.processed_data["signal"] = combine_signals(df["signal"].iloc[-1])
         self.processed_data["features"] = df

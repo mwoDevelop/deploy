@@ -25,3 +25,36 @@ def get_candles(connector_name="binance", trading_pair="BTC-USDT", interval="1m"
                                                             end_time=int(end_time.timestamp())))
     df.index = pd.to_datetime(df.timestamp, unit='s')
     return df
+
+@staticmethod
+def ai_signals() -> int:
+    external_sig = external_signal().strip().lower()
+    print(f"External signal is {external_sig}")
+    if external_sig == "buy":
+        return 1
+    if external_sig == "sell":
+        return -1
+
+    return 0
+
+@staticmethod
+def combine_signals(original: int) -> int:
+    external_sig = external_signal().strip().lower()
+    print(f"External signal is {external_sig} and original is {original}")
+    if external_sig == "buy" and original == 1:
+        return 1
+    if external_sig == "sell" and original == -1:
+        return -1
+
+    return 0
+
+@staticmethod
+def external_signal():
+    import time
+    signal = 0
+    with open("/home/hummingbot/data/signals.txt", "r") as f:
+        try:
+            signal = f.read()
+        finally:
+            time.sleep(1)
+        return signal
