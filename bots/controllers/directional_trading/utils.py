@@ -6,7 +6,6 @@ def ai_signals() -> int:
         return 1
     if external_sig == "sell":
         return -1
-
     return 0
 
 @staticmethod
@@ -19,7 +18,6 @@ def combine_signals(original: int, trading_pair: str) -> int:
         return -1
     if external_sig == "ignore":
         return original
-
     return 0
 
 @staticmethod
