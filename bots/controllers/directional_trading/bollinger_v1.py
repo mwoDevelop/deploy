@@ -97,6 +97,6 @@ class BollingerV1Controller(DirectionalTradingControllerBase):
         df.loc[short_condition, "signal"] = -1
 
         # Update processed data
-        from pages.config.utils import combine_signals
-        self.processed_data["signal"] = combine_signals(df["signal"].iloc[-1])
+        from .utils import combine_signals
+        self.processed_data["signal"] = combine_signals(df["signal"].iloc[-1], trading_pair=self.config.trading_pair)
         self.processed_data["features"] = df
