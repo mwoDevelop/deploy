@@ -1,6 +1,6 @@
 @staticmethod
-def ai_signals() -> int:
-    external_sig = external_signal().strip().lower()
+def ai_signals(trading_pair: str) -> int:
+    external_sig = external_signal(trading_pair).strip().lower()
     print(f"External signal is {external_sig}")
     if external_sig == "buy":
         return 1
