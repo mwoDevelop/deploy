@@ -66,5 +66,6 @@ class SuperTrend(DirectionalTradingControllerBase):
         df.loc[short_condition, 'signal'] = -1
 
         # Update processed data
-        self.processed_data["signal"] = df["signal"].iloc[-1]
+        from .utils import ai_signals
+        self.processed_data["signal"] = ai_signals(trading_pair=self.config.trading_pair)
         self.processed_data["features"] = df
