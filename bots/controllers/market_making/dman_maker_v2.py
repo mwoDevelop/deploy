@@ -113,11 +113,18 @@ class DManMakerV2(MarketMakingControllerBase):
             executor_id=executor.id) for executor in executors_to_refresh]
 
     def get_executor_config(self, level_id: str, price: Decimal, amount: Decimal):
-        trade_type = self.get_trade_type_from_level_id(level_id)
-        if trade_type == TradeType.BUY:
+        # Update processed data
+        # trade_type = self.get_trade_type_from_level_id(level_id)
+        from .utils import ai_signals
+        trade_type = ai_signals(trading_pair=self.config.trading_pair)
+        print(f"{self.market_data_provider.time()}: AI trade info: {trade_type}, {level_id}, {price}, {amount}")
+        if trade_type == 1:
             prices = [price * (1 - spread) for spread in self.spreads]
-        else:
+        elif trade_type == -1:
             prices = [price * (1 + spread) for spread in self.spreads]
+        else:
+            return None
+
         amounts = [amount * pct for pct in self.dca_amounts_pct]
         amounts_quote = [amount * price for amount, price in zip(amounts, prices)]
         return DCAExecutorConfig(
